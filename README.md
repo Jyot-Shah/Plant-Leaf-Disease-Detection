@@ -76,12 +76,12 @@ An AI-powered web application that detects plant leaf diseases using YOLOv11 obj
 ### Original Dataset
 This project uses the **PlantDoc Dataset** by Chainfly as the base dataset:
 
-🔗 **Original Dataset**: [PlantDoc Dataset by Chainfly](YOUR_LINK_HERE)
+🔗 **Original Dataset**: [PlantDoc Dataset by Chainfly](https://universe.roboflow.com/chainfly-kbwvw/plantdoc-rcmou)
 
 ### Custom Augmented Dataset
 I created a custom augmented version of the dataset on Roboflow with various transformations to improve model performance:
 
-🔗 **Augmented Dataset**: [YOUR_ROBOFLOW_DATASET_LINK_HERE]
+🔗 **Augmented Dataset**: [https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1]
 
 ### Augmentation Details
 
