@@ -81,7 +81,7 @@ This project uses the **PlantDoc Dataset** by Chainfly as the base dataset:
 ### Custom Augmented Dataset
 I created a custom augmented version of the dataset on Roboflow with various transformations to improve model performance:
 
-🔗 **Augmented Dataset**: [https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1]
+🔗 **Augmented Dataset**: [Augmented Dataset v1 by Jyot](https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1)
 
 ### Augmentation Details
 
