@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaf Disease Detection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🌿 Plant Leaf Disease Detection & Treatment</h1>
+        <p>Upload a leaf image to detect diseases and get medication advice</p>
+    </div>
+
+    <div class="container">
+        <div class="main-section">
+            <div class="upload-card">
+                <h2>Upload Leaf Image</h2>
+                <form id="uploadForm">
+                    <input type="file" id="fileInput" accept="image/*" required>
+                    <button type="submit">Analyze Image</button>
+                </form>
+            </div>
+
+            <div id="result" class="result-card"></div>
+        </div>
+
+        <section class="chatbot-card">
+            <div class="chatbot-header">
+                <h2>💬 AI Treatment Assistant</h2>
+                <p id="chat-status">Upload an image to start</p>
+            </div>
+            <div id="chat-window"></div>
+            <form id="chat-form">
+                <input id="chat-input" type="text" placeholder="Ask about treatment options..." disabled />
+                <button type="submit" disabled>Send</button>
+            </form>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
