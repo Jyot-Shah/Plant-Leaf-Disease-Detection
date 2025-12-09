@@ -237,10 +237,7 @@ SYSTEM_PROMPT = """You are a concise plant pathology assistant..."""
 
 ## 🙏 Acknowledgments
 
-### Inspiration
-This project was inspired by and built upon tutorials from **Augmented AI** YouTube channel. Their videos provided valuable guidance on implementing plant disease detection systems.
-
-🔗 [AugmentedAI](https://www.youtube.com/@Augmented_AI)
+This project was inspired by and built upon tutorials from the [Augmented AI](https://www.youtube.com/@Augmented_AI) YouTube channel. Their videos provided valuable guidance on implementing plant disease detection systems.
 
 ## 📝 License
 
@@ -248,7 +245,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-- [Jyot Shah](https://www.linkedin.com/in/jyotshah1/)
+**[Jyot Shah](https://www.linkedin.com/in/jyotshah1/)**
 
 For questions or issues, please open an issue on GitHub or mail to **jyotshah1595@gmail.com**.
 
