@@ -87,7 +87,7 @@ I created a custom augmented version of the dataset on Roboflow with various tra
 
 The following preprocessing and augmentations were applied to enhance the training data:
 
-[](dataset-info.png)
+![](dataset-info.png)
 
 These augmentations help the model generalize better to real-world conditions like different lighting, angles, and image quality.
 
