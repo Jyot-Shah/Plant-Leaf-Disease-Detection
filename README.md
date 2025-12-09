@@ -11,18 +11,16 @@ An AI-powered web application that detects plant leaf diseases using YOLOv11 obj
 
 ## 📋 Table of Contents
 - [Features](#-features)
-- [Demo](#-demo)
 - [Tech Stack](#-tech-stack)
 - [Dataset](#-dataset)
 - [Model Training](#-model-training)
 - [Installation](#-installation)
 - [Usage](#-usage)
 - [Project Structure](#-project-structure)
-- [API Endpoints](#-api-endpoints)
 - [Configuration](#-configuration)
 - [Acknowledgments](#-acknowledgments)
-- [Contributing](#-contributing)
 - [License](#-license)
+- [Author](#-author)
 
 ## ✨ Features
 
@@ -33,15 +31,6 @@ An AI-powered web application that detects plant leaf diseases using YOLOv11 obj
 - 🎨 **Modern UI**: Clean, responsive design with gradient backgrounds and smooth animations
 - ⚡ **Fast Processing**: Optimized YOLOv11 model for quick detection and response times
 - 🔄 **Context-Aware Chat**: Maintains conversation history for follow-up questions
-
-## 🎥 Demo
-
-| Step | Description |
-|------|-------------|
-| 1️⃣ | Upload a leaf image using the file selector |
-| 2️⃣ | Click "Analyze Image" - loading spinner appears |
-| 3️⃣ | View annotated image with detected disease badge |
-| 4️⃣ | Chat with AI assistant for treatment advice |
 
 ## 🛠 Tech Stack
 
@@ -95,77 +84,76 @@ These augmentations help the model generalize better to real-world conditions li
 
 The YOLOv11 model was trained on Google Colab using the augmented dataset from Roboflow.
 
-### Training Notebook
+### Pre-trained Model
+A pre-trained model (`best.pt`) is already included in this repository at `backend/assets/best.pt`. You can use it directly without training.
+
+### Train Your Own Model (Optional)
+
+If you want to train your own model or improve upon the existing one:
+
+#### Training Notebook
 All training code is available in [`trainPlantDocToYOLO.ipynb`](trainPlantDocToYOLO.ipynb)
 
-### How to Train Your Own Model
+#### Steps to Train
 
 1. **Open the Colab Notebook**
    - Upload `trainPlantDocToYOLO.ipynb` to Google Colab
    - Or open directly from this repository
 
 2. **Get Roboflow API Key**
-   - Go to [my Roboflow dataset](YOUR_ROBOFLOW_DATASET_LINK_HERE)
+   - Go to [my Roboflow dataset](https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1)
+   - Click on 'Download dataset'
    - Create an account or sign in
-   - Navigate to your workspace settings
-   - Copy your API key
+   - Choose YOLOv11 format and choose 'Show download code'
+   - Continue and copy your API key
 
 3. **Configure the Notebook**
    ```python
    # Replace with your Roboflow API key
-   rf = Roboflow(api_key="YOUR_API_KEY_HERE")
+   rf = Roboflow(api_key="your_roboflow_api_key")
    ```
 
-4. **Run All Cells**
+4. **Run All Cells (in a GPU environment)**
    - The notebook will download the dataset
    - Train the YOLOv11 model
-   - Export the best weights (`best.pt`)
+   - Predict the test images and print the metrics
 
 5. **Download the Model**
-   - After training, download `best.pt` from the output
-   - Place it in `backend/assets/` folder
-
-### Training Configuration
-```python
-model = YOLO('yolo11n.pt')  # YOLOv11 nano as base
-results = model.train(
-    data='data.yaml',
-    epochs=100,
-    imgsz=640,
-    batch=16
-)
-```
+   - After training, download `best.pt` from `/content/runs/detect/train/weights/best.pt`
 
 ## 📦 Installation
 
 ### Prerequisites
 - Python 3.8 or higher
 - Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
-- Trained YOLO model (`best.pt`) or train your own
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/yourusername/leaf-disease-detection.git
-cd leaf-disease-detection
+git clone https://github.com/Jyot-Shah/Plant-Leaf-Disease-Detection.git
+cd Plant-Leaf-Disease-Detection
 ```
 
 ### Step 2: Install Dependencies
 ```bash
-cd backend
 pip install -r requirements.txt
 ```
 
 ### Step 3: Configure Environment Variables
-Create a `.env` file in the **root directory** (not in backend):
+Create a `.env` file in the root directory:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-### Step 4: Add YOLO Model
-Place your trained model file in the backend:
-```
-backend/assets/best.pt
-```
+### Step 4: Model Setup
+You have two options:
+
+**Option A: Use Pre-trained Model (Recommended)**
+- The pre-trained model is already included at `backend/assets/best.pt`
+- No additional setup required
+
+**Option B: Train Your Own Model**
+- Follow the [Model Training](#-model-training) section above
+- Place your trained `best.pt` in `backend/assets/`
 
 ### Step 5: Run the Application
 ```bash
@@ -200,7 +188,7 @@ Open `frontend/index.html` in browser or use Live Server extension in VS Code.
 ## 📁 Project Structure
 
 ```
-Leaf Disease Detection/
+Plant-Leaf-Disease-Detection/
 │
 ├── backend/
 │   ├── app.py                    # Flask app & API routes
@@ -211,9 +199,8 @@ Leaf Disease Detection/
 │   │   ├── initialize_chat()     # Start chat session with disease context
 │   │   └── chat_with_gpt()       # Send messages & get responses
 │   │
-│   ├── requirements.txt          # Python dependencies
 │   └── assets/
-│       └── best.pt              # Trained YOLOv11 model weights
+│       └── best.pt              # Pre-trained YOLOv11 model weights
 │
 ├── frontend/
 │   ├── index.html               # Main HTML structure
@@ -233,75 +220,17 @@ Leaf Disease Detection/
 │       ├── API calls (fetch)
 │       └── Chat message handling
 │
+├── requirements.txt             # Python dependencies
 ├── trainPlantDocToYOLO.ipynb    # Colab training notebook
+├── dataset-info.png             # Augmentation details image
 ├── .env                         # Environment variables (create this)
-├── .gitignore                   # Git ignore rules
 └── README.md                    # Documentation
-```
-
-## 🔌 API Endpoints
-
-### Disease Detection
-```http
-POST /predict_json
-Content-Type: multipart/form-data
-```
-
-**Request Body:**
-| Field | Type | Description |
-|-------|------|-------------|
-| file | File | Leaf image (JPG/PNG) |
-
-**Response:**
-```json
-{
-  "diseases": ["Tomato Late Blight"],
-  "image_b64": "base64_encoded_annotated_image..."
-}
-```
-
-### Chat
-```http
-POST /chat
-Content-Type: application/json
-```
-
-**Request Body:**
-```json
-{
-  "message": "How do I treat this disease?"
-}
-```
-
-**Response:**
-```json
-{
-  "reply": "For Tomato Late Blight, apply copper-based fungicides early in the morning..."
-}
-```
-
-### Error Responses
-```json
-{
-  "error": "No file provided"
-}
 ```
 
 ## ⚙️ Configuration
 
-### Environment Variables
-| Variable | Description | Location |
-|----------|-------------|----------|
-| `GEMINI_API_KEY` | Google Gemini API key | `.env` (root) |
-
-### Model Path
-Update in `backend/app.py` if needed:
-```python
-model = YOLO('assets/best.pt')
-```
-
 ### Chatbot System Prompt
-Customize AI behavior in `backend/chatbot.py`:
+Customize AI behavior in `backend/chatbot.py` if you want to:
 ```python
 SYSTEM_PROMPT = """You are a concise plant pathology assistant..."""
 ```
@@ -311,58 +240,19 @@ SYSTEM_PROMPT = """You are a concise plant pathology assistant..."""
 ### Inspiration
 This project was inspired by and built upon tutorials from **Augmented AI** YouTube channel. Their videos provided valuable guidance on implementing plant disease detection systems.
 
-🔗 **Augmented AI YouTube Channel**: [https://www.youtube.com/@AugmentedAI](https://www.youtube.com/@AugmentedAI)
-
-### Resources & Tools
-| Resource | Purpose |
-|----------|---------|
-| [PlantDoc Dataset](YOUR_LINK_HERE) | Original dataset by Chainfly |
-| [Roboflow](https://roboflow.com) | Dataset augmentation & management |
-| [Ultralytics YOLOv11](https://github.com/ultralytics/ultralytics) | Object detection framework |
-| [Google Gemini](https://deepmind.google/technologies/gemini/) | Conversational AI |
-| [Google Colab](https://colab.research.google.com) | Free GPU for training |
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how:
-
-1. **Fork** the repository
-2. **Create** a feature branch
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-3. **Commit** your changes
-   ```bash
-   git commit -m "Add YourFeature"
-   ```
-4. **Push** to the branch
-   ```bash
-   git push origin feature/YourFeature
-   ```
-5. **Open** a Pull Request
-
-### Ideas for Contribution
-- Add more disease classes
-- Improve UI/UX
-- Add multi-language support
-- Mobile responsive improvements
-- Add disease prevention tips database
+🔗 [AugmentedAI](https://www.youtube.com/@Augmented_AI)
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📧 Contact
+## 👤 Author
 
-**Your Name** - [your.email@example.com](mailto:your.email@example.com)
+- [Jyot Shah](https://www.linkedin.com/in/jyotshah1/)
 
-🔗 **Project Link**: [https://github.com/yourusername/leaf-disease-detection](https://github.com/yourusername/leaf-disease-detection)
+For questions or issues, please open an issue on GitHub or mail to **jyotshah1595@gmail.com**.
 
 ---
-
-<p align="center">
-  ⭐ If you found this project helpful, please give it a star!
-</p>
 
 <p align="center">
   Made with 💚 for plant health
