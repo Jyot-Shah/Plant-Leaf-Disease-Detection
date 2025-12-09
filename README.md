@@ -83,20 +83,11 @@ I created a custom augmented version of the dataset on Roboflow with various tra
 
 🔗 **Augmented Dataset**: [Augmented Dataset v1 by Jyot](https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1)
 
-### Augmentation Details
+### Augmentation & Preprocessing Details
 
-The following augmentations were applied to enhance the training data:
+The following preprocessing and augmentations were applied to enhance the training data:
 
-![Augmentation Details](assets/augmentations.png)
-
-**Applied Augmentations:**
-- Rotation (±15°)
-- Horizontal & Vertical Flips
-- Brightness & Contrast adjustments
-- Blur effects
-- Noise injection
-- Mosaic augmentation
-- Scale variations
+[](dataset-info.png)
 
 These augmentations help the model generalize better to real-world conditions like different lighting, angles, and image quality.
 
