@@ -245,7 +245,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**[Jyot Shah](https://www.linkedin.com/in/jyotshah1/)**
+- [Jyot Shah](https://www.linkedin.com/in/jyotshah1/)
 
 For questions or issues, please open an issue on GitHub or mail to **jyotshah1595@gmail.com**.
 
