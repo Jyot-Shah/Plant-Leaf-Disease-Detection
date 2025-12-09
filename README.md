@@ -224,6 +224,7 @@ Plant-Leaf-Disease-Detection/
 ├── trainPlantDocToYOLO.ipynb    # Colab training notebook
 ├── dataset-info.png             # Augmentation details image
 ├── .env                         # Environment variables (create this)
+├── Model Training Results.rar   # Contains model training metrics' results
 └── README.md                    # Documentation
 ```
 
