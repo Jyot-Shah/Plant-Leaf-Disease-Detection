@@ -101,7 +101,7 @@ All training code is available in [`trainPlantDocToYOLO.ipynb`](trainPlantDocToY
    - Or open directly from this repository
 
 2. **Get Roboflow API Key**
-   - Go to [my Roboflow dataset](https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1)
+   - Go to [the Roboflow dataset](https://app.roboflow.com/workspace1-qu3qq/plantdoc-rcmou-z1s3f/1)
    - Click on 'Download dataset'
    - Create an account or sign in
    - Choose YOLOv11 format and choose 'Show download code'
