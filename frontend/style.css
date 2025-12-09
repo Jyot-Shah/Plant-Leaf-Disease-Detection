@@ -6,14 +6,14 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0a472a 0%, #0d5c3d 50%, #106b47 100%);
+    background: #0D1B13;
     min-height: 100vh;
     color: #333;
     padding: 20px;
 }
 
 .header {
-    background: linear-gradient(135deg, #1e7e34 0%, #0f5c2f 100%);
+    background: #1C221F;
     color: white;
     padding: 50px 20px;
     text-align: center;
@@ -56,24 +56,24 @@ body {
 .upload-card,
 .result-card,
 .chatbot-card {
-    background: white;
+    background: #D6FFE5;
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
-    border: 1px solid rgba(30, 126, 52, 0.1);
+    border: 1px solid rgba(19, 138, 54, 0.2);
 }
 
 .upload-card:hover,
 .chatbot-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 16px 48px rgba(30, 126, 52, 0.25);
-    border-color: rgba(30, 126, 52, 0.3);
+    box-shadow: 0 16px 48px rgba(19, 138, 54, 0.25);
+    border-color: rgba(19, 138, 54, 0.4);
 }
 
 .upload-card h2,
 .chatbot-header h2 {
-    color: #1e7e34;
+    color: #138A36;
     margin-bottom: 20px;
     font-size: 1.6em;
     font-weight: 700;
@@ -87,23 +87,24 @@ body {
 
 #fileInput {
     padding: 16px;
-    border: 2px dashed #1e7e34;
+    border: 2px dashed #138A36;
     border-radius: 10px;
-    background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e9 100%);
+    background: #E8FFF0;
     cursor: pointer;
     transition: all 0.3s;
     font-size: 1em;
+    color: #0D1B13;
 }
 
 #fileInput:hover {
-    border-color: #0f5c2f;
-    background: linear-gradient(135deg, #dcfce7 0%, #c8e6c9 100%);
-    box-shadow: 0 4px 12px rgba(30, 126, 52, 0.15);
+    border-color: #0D5C2F;
+    background: #C8F5D5;
+    box-shadow: 0 4px 12px rgba(19, 138, 54, 0.15);
 }
 
 button {
     padding: 14px 28px;
-    background: linear-gradient(135deg, #1e7e34 0%, #0f5c2f 100%);
+    background: #138A36;
     color: white;
     border: none;
     border-radius: 10px;
@@ -111,12 +112,13 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(30, 126, 52, 0.2);
+    box-shadow: 0 4px 12px rgba(19, 138, 54, 0.2);
 }
 
 button:hover {
+    background: #0D5C2F;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(30, 126, 52, 0.35);
+    box-shadow: 0 8px 24px rgba(19, 138, 54, 0.35);
 }
 
 button:disabled {
@@ -134,7 +136,7 @@ button:disabled {
 }
 
 .result-card h3 {
-    color: #1e7e34;
+    color: #138A36;
     margin-bottom: 15px;
     font-size: 1.3em;
     font-weight: 700;
@@ -149,8 +151,8 @@ button:disabled {
     display: inline-block;
     width: 40px;
     height: 40px;
-    border: 4px solid rgba(30, 126, 52, 0.2);
-    border-top-color: #1e7e34;
+    border: 4px solid rgba(19, 138, 54, 0.2);
+    border-top-color: #138A36;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
@@ -161,7 +163,7 @@ button:disabled {
 }
 
 .loading-text {
-    color: #1e7e34;
+    color: #138A36;
     font-size: 1.1em;
     font-weight: 600;
 }
@@ -184,7 +186,7 @@ button:disabled {
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     object-fit: contain;
-    border: 1px solid rgba(30, 126, 52, 0.1);
+    border: 1px solid rgba(19, 138, 54, 0.2);
 }
 
 .result-info {
@@ -195,28 +197,28 @@ button:disabled {
 }
 
 .disease-badge {
-    background: linear-gradient(135deg, #1e7e34 0%, #0f5c2f 100%);
+    background: #138A36;
     color: white;
     padding: 15px 20px;
     border-radius: 12px;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(30, 126, 52, 0.25);
+    box-shadow: 0 4px 12px rgba(19, 138, 54, 0.25);
     margin-bottom: 15px;
     text-align: center;
 }
 
 .disease-title {
-    color: #1e7e34;
+    color: #138A36;
     font-size: 1.1em;
     font-weight: 700;
     margin-bottom: 10px;
 }
 
 .disease-list {
-    background: #f0fdf4;
+    background: #E8FFF0;
     padding: 15px;
     border-radius: 10px;
-    border-left: 4px solid #1e7e34;
+    border-left: 4px solid #138A36;
 }
 
 .disease-list ul {
@@ -226,13 +228,13 @@ button:disabled {
 
 .disease-list li {
     padding: 8px 0;
-    color: #1b5e20;
+    color: #0D5C2F;
     font-weight: 500;
 }
 
 .disease-list li:before {
     content: "✓ ";
-    color: #1e7e34;
+    color: #138A36;
     font-weight: 700;
     margin-right: 8px;
 }
@@ -244,14 +246,14 @@ button:disabled {
 }
 
 .chatbot-header {
-    border-bottom: 2px solid #f0fdf4;
+    border-bottom: 2px solid #C8F5D5;
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
 
 .chatbot-header p {
     font-size: 0.9em;
-    color: #666;
+    color: #0D5C2F;
     margin: 0;
     font-weight: 500;
 }
@@ -261,11 +263,11 @@ button:disabled {
     min-height: 300px;
     max-height: 400px;
     overflow-y: auto;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #C8F5D5;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
-    background: linear-gradient(135deg, #fafafa 0%, #f0fdf4 100%);
+    background: #E8FFF0;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -276,17 +278,17 @@ button:disabled {
 }
 
 #chat-window::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #C8F5D5;
     border-radius: 4px;
 }
 
 #chat-window::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #1e7e34 0%, #0f5c2f 100%);
+    background: #138A36;
     border-radius: 4px;
 }
 
 #chat-window::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #0f5c2f 0%, #051f18 100%);
+    background: #0D5C2F;
 }
 
 .chat-msg {
@@ -312,22 +314,22 @@ button:disabled {
 }
 
 .chat-msg.user {
-    background: linear-gradient(135deg, #1e7e34 0%, #0f5c2f 100%);
+    background: #138A36;
     color: white;
     margin-left: auto;
     border-bottom-right-radius: 4px;
-    box-shadow: 0 4px 12px rgba(30, 126, 52, 0.2);
+    box-shadow: 0 4px 12px rgba(19, 138, 54, 0.2);
 }
 
 .chat-msg.bot {
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    color: #1b5e20;
+    background: #C8F5D5;
+    color: #0D5C2F;
     margin-right: auto;
     border-bottom-left-radius: 4px;
 }
 
 .chat-msg.bot strong {
-    color: #0f5c2f;
+    color: #138A36;
     font-weight: 700;
 }
 
@@ -349,20 +351,23 @@ button:disabled {
 #chat-input {
     flex: 1;
     padding: 12px 16px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #C8F5D5;
     border-radius: 10px;
     font-size: 0.95em;
     transition: all 0.3s;
+    background: #E8FFF0;
+    color: #0D1B13;
 }
 
 #chat-input:focus {
     outline: none;
-    border-color: #1e7e34;
-    background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e9 100%);
+    border-color: #138A36;
+    background: #D6FFE5;
 }
 
 #chat-input:disabled {
-    background: #f5f5f5;
+    background: #C8F5D5;
+    color: #666;
     cursor: not-allowed;
 }
 
