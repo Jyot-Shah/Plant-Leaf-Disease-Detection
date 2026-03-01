@@ -2,9 +2,18 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-# Load .env from parent directory
+# Load environment variables from parent directory
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+# Configure Gemini API
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    print("WARNING: GEMINI_API_KEY not found in .env file. Chat functionality will be limited.")
+else:
+    try:
+        genai.configure(api_key=api_key)
+    except Exception as e:
+        print(f"Error configuring Gemini API: {e}")
 
 SYSTEM_PROMPT = """You are a concise plant pathology assistant.
 When replying:
@@ -21,7 +30,7 @@ model = genai.GenerativeModel('gemini-2.5-flash')
 chat_session = None
 
 def initialize_chat(disease: str):
-    """Initialize chat session with system prompt and disease context."""
+    """Initialize chat session with detected disease context"""
     global chat_session
     try:
         chat_session = model.start_chat(history=[])
@@ -32,13 +41,14 @@ def initialize_chat(disease: str):
         chat_session = None
 
 def chat_with_gpt(user_message: str) -> str:
-    """Send user message to ongoing chat session."""
+    """Send user message to chat session and return response"""
     global chat_session
     if chat_session is None:
-        return "Chat service is currently unavailable, but your detection result is shown above."
+        return "Chat service is currently unavailable. Please try uploading an image first."
+    
     try:
         response = chat_session.send_message(user_message)
         return response.text.strip()
     except Exception as e:
         print(f"Chatbot error: {e}")
-        return "Chat service is currently unavailable, but your detection result is shown above."
+        return "Unable to process your message at this time. Please try again."

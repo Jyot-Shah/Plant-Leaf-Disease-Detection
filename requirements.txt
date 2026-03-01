@@ -4,3 +4,4 @@ ultralytics
 pillow
 python-dotenv
 google-generativeai
+requests

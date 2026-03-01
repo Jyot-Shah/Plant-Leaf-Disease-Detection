@@ -12,6 +12,7 @@ An AI-powered web application that detects plant leaf diseases using YOLOv11 obj
 ## 📋 Table of Contents
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
+- [API Endpoints & Routes](#-api-endpoints--routes)
 - [Dataset](#-dataset)
 - [Model Training](#-model-training)
 - [Installation](#-installation)
@@ -39,7 +40,7 @@ An AI-powered web application that detects plant leaf diseases using YOLOv11 obj
 |------------|---------|
 | **Flask** | Web framework & REST API |
 | **Ultralytics YOLOv11** | Object detection model |
-| **Google Gemini 2.0 Flash** | Conversational AI chatbot |
+| **Google Gemini 2.5 Flash** | Conversational AI chatbot |
 | **Pillow** | Image processing |
 | **Flask-CORS** | Cross-origin resource sharing |
 | **python-dotenv** | Environment variable management |
@@ -56,9 +57,68 @@ An AI-powered web application that detects plant leaf diseases using YOLOv11 obj
 | Technology | Purpose |
 |------------|---------|
 | **YOLOv11** | Real-time disease detection |
-| **Gemini 2.0 Flash** | Natural language processing |
+| **Gemini 2.5 Flash** | Natural language processing |
 | **Roboflow** | Dataset management & augmentation |
 | **Google Colab** | Model training environment |
+
+## 🔌 API Endpoints & Routes
+
+Base URL: `http://127.0.0.1:5000`
+
+### Frontend Routes
+- **GET /**: Serves `frontend/index.html`
+- **GET /<path>**: Serves frontend static assets (`app.js`, `style.css`, `icon.svg`, etc.)
+- **Unknown route**: Returns `404` with `{"error": "Incorrect route: /<path>"}`
+
+### Backend API Endpoints
+
+#### 1) Health Check
+- **GET /health**
+- **Purpose**: Checks backend status and model load state
+- **Success Response (200)**:
+   ```json
+   {
+      "status": "healthy",
+      "model_loaded": true
+   }
+   ```
+
+#### 2) Disease Detection
+- **POST /predict_json**
+- **Content-Type**: `multipart/form-data`
+- **Body**: `file=<leaf_image>`
+- **Success Response (200)**:
+   ```json
+   {
+      "diseases": ["Apple Scab"],
+      "image_b64": "...",
+      "status": "success"
+   }
+   ```
+- **Error Responses**:
+   - `400`: Missing file, invalid image, unsupported file type, or file too large
+   - `503`: Model not loaded
+   - `500`: Internal prediction error
+
+#### 3) Chat Assistant
+- **POST /chat**
+- **Content-Type**: `application/json`
+- **Body**:
+   ```json
+   {
+      "message": "How do I treat this disease?"
+   }
+   ```
+- **Success Response (200)**:
+   ```json
+   {
+      "reply": "...",
+      "status": "success"
+   }
+   ```
+- **Error Responses**:
+   - `400`: Invalid request format, empty message, or message too long
+   - `500`: Chat processing error
 
 ## 📊 Dataset
 
@@ -163,7 +223,7 @@ python app.py
 Backend runs on `http://127.0.0.1:5000`
 
 ### Step 6: Open Frontend
-Open `frontend/index.html` in browser or use Live Server extension in VS Code.
+Open `http://127.0.0.1:5000` in your browser.
 
 ## 🚀 Usage
 
@@ -192,6 +252,9 @@ Plant-Leaf-Disease-Detection/
 │
 ├── backend/
 │   ├── app.py                    # Flask app & API routes
+│   │   ├── /                     # Frontend entry route
+│   │   ├── /<path>               # Frontend static files route
+│   │   ├── /health               # Backend health endpoint
 │   │   ├── /predict_json         # Disease detection endpoint
 │   │   └── /chat                 # Chatbot endpoint
 │   │
