@@ -1,4 +1,5 @@
 import os
+import uuid
 from dotenv import load_dotenv
 import google.generativeai as genai
 
@@ -20,32 +21,36 @@ When replying:
 - Use short sentences and a friendly, professional tone.
 - Do NOT use bullet points or numbered lists; use brief paragraphs.
 - Keep answers under 120 words.
-Given a detected leaf disease name and the user's message, provide:
+Given the detected leaf disease name in the context, provide:
 - Likely treatment/medication (safe, region-agnostic).
 - Cultural practices and precautions.
-- When to consult a local agronomist.
-If disease is empty, ask for one."""
+- When to consult a local agronomist."""
 
+# default model (unused for chat, just kept if needed)
 model = genai.GenerativeModel('gemini-2.5-flash')
-chat_session = None
+ACTIVE_SESSIONS = {}
 
-def initialize_chat(disease: str):
-    """Initialize chat session with detected disease context"""
-    global chat_session
+def initialize_chat(disease: str) -> str:
+    """Initialize chat session with detected disease context, returns session_id"""
     try:
-        chat_session = model.start_chat(history=[])
-        initial_message = f"{SYSTEM_PROMPT}\n\nDisease detected: {disease}"
-        chat_session.send_message(initial_message)
+        session_id = str(uuid.uuid4())
+        # Inject the parsed disease into the systemic instruction for this session
+        instruction = f"{SYSTEM_PROMPT}\n\nIMPORTANT CONTEXT: The user's plant is diagnosed with '{disease}'."
+        local_model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=instruction)
+        
+        chat_session = local_model.start_chat(history=[])
+        ACTIVE_SESSIONS[session_id] = chat_session
+        return session_id
     except Exception as e:
         print(f"Error initializing chat: {e}")
-        chat_session = None
+        return None
 
-def chat_with_gpt(user_message: str) -> str:
+def chat_with_gpt(session_id: str, user_message: str) -> str:
     """Send user message to chat session and return response"""
-    global chat_session
-    if chat_session is None:
-        return "Chat service is currently unavailable. Please try uploading an image first."
+    if not session_id or session_id not in ACTIVE_SESSIONS:
+        return "Chat service is currently unavailable or session expired. Please analyze a new image."
     
+    chat_session = ACTIVE_SESSIONS[session_id]
     try:
         response = chat_session.send_message(user_message)
         return response.text.strip()

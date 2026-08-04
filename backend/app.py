@@ -1,29 +1,20 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from ultralytics import YOLO
-from PIL import Image
-import io
-import base64
 import os
+import traceback
 from chatbot import initialize_chat, chat_with_gpt
+from predictor import predict_disease, is_model_loaded
 
 app = Flask(__name__)
 CORS(app)
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), '..', 'frontend')
-
-# Load YOLO model
-try:
-    model = YOLO('assets/best.pt')
-except Exception as e:
-    print(f"Error loading YOLO model: {e}")
-    model = None
 
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint to verify backend is running"""
     return jsonify({
         'status': 'healthy',
-        'model_loaded': model is not None
+        'model_loaded': is_model_loaded()
     }), 200
 
 @app.route('/', methods=['GET'])
@@ -47,7 +38,7 @@ def handle_not_found(error):
 @app.route('/predict_json', methods=['POST'])
 def predict_json():
     """Detect plant diseases from uploaded leaf image"""
-    if not model:
+    if not is_model_loaded():
         return jsonify({'error': 'Model not loaded. Please check server configuration.'}), 503
     
     if 'file' not in request.files:
@@ -71,40 +62,26 @@ def predict_json():
         if len(image_bytes) > 10 * 1024 * 1024:
             return jsonify({'error': 'File too large. Maximum size is 10MB.'}), 400
         
-        # Open and validate image
-        try:
-            image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-        except Exception as img_error:
-            return jsonify({'error': 'Invalid image file. Please upload a valid image.'}), 400
-        
-        # Run YOLO prediction
-        results = model.predict(image)[0]
-        
-        # Extract unique disease names from detections
-        diseases = []
-        if results.boxes and hasattr(results.boxes, "cls"):
-            diseases = list({model.names[int(c)] for c in results.boxes.cls.tolist()})
-        
-        # Generate annotated image
-        annotated = results.plot()
-        buf = io.BytesIO()
-        Image.fromarray(annotated).save(buf, format="JPEG")
-        buf.seek(0)
-        image_b64 = base64.b64encode(buf.read()).decode("utf-8")
+        diseases, image_b64 = predict_disease(image_bytes)
         
         # Initialize chatbot with detected disease
+        session_id = None
         if diseases:
-            initialize_chat(diseases[0])
+            session_id = initialize_chat(diseases[0])
         
         return jsonify({
             "diseases": diseases,
             "image_b64": image_b64,
+            "session_id": session_id,
             "status": "success"
         }), 200
     
+    except ValueError as val_err:
+        return jsonify({'error': str(val_err)}), 400
     except Exception as e:
-        print(f"Prediction error: {e}")
-        return jsonify({'error': f'Prediction failed: {str(e)}'}), 500
+        err_msg = traceback.format_exc()
+        print(f"Prediction error:\\n{err_msg}")
+        return jsonify({'error': f'Prediction failed: {str(e)}', 'traceback': err_msg}), 500
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -115,6 +92,7 @@ def chat():
         return jsonify({"reply": "Invalid request format."}), 400
     
     message = (data.get('message') or "").strip()
+    session_id = data.get('session_id')
     
     if not message:
         return jsonify({"reply": "Please enter a message."}), 400
@@ -123,7 +101,7 @@ def chat():
         return jsonify({"reply": "Message too long. Please keep it under 500 characters."}), 400
     
     try:
-        reply = chat_with_gpt(message)
+        reply = chat_with_gpt(session_id, message)
         return jsonify({"reply": reply, "status": "success"}), 200
     except Exception as e:
         print(f"Chat error: {e}")
