@@ -29,6 +29,8 @@ except Exception as e:
 def is_model_loaded() -> bool:
     return model is not None
 
+import gc
+
 def predict_disease(image_bytes: bytes) -> tuple:
     """
     Validates the image and predicts the disease using YOLO.
@@ -39,10 +41,14 @@ def predict_disease(image_bytes: bytes) -> tuple:
     
     try:
         image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
+        # Extreme Memory Optimization: Force image down to YOLO's native 640x640 tensor size immediately
+        # This completely stops 5MB+ iPhone photos from expanding into 60MB+ raw RGB Bitmaps in memory
+        image.thumbnail((640, 640), Image.Resampling.LANCZOS)
     except Exception as e:
         raise ValueError("Invalid image file. Could not parse image bytes.") from e
         
     try:
+        gc.collect() # Force OS to sweep memory before the PyTorch spike
         results = model.predict(image)[0]
     except Exception as e:
         raise RuntimeError(f"YOLO prediction failed: {e}") from e
