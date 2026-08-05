@@ -6,7 +6,12 @@ from chatbot import initialize_chat, chat_with_gpt
 from predictor import predict_disease, is_model_loaded
 
 app = Flask(__name__)
-CORS(app)
+origins = [
+    "https://plant-leaf-disease-detection-1.vercel.app",
+    "http://127.0.0.1:5000",
+    "http://localhost:5000"
+]
+CORS(app, resources={r"/*": {"origins": origins}})
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), '..', 'frontend')
 
 @app.route('/health', methods=['GET'])
@@ -112,8 +117,9 @@ def chat():
 if __name__ == '__main__':
     try:
         from waitress import serve
-        print("Starting production server with Waitress on port 5000...")
-        serve(app, host='0.0.0.0', port=5000)
+        port = int(os.environ.get('PORT', 5000))
+        print(f"Starting production server with Waitress on port {port}...")
+        serve(app, host='0.0.0.0', port=port)
     except ImportError:
         print("Waitress not installed. Falling back to Flask development server (NOT RECOMMENDED for production).")
         app.run(host='0.0.0.0', port=5000, debug=False)

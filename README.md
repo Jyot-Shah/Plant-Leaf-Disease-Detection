@@ -233,7 +233,7 @@ cd Plant-Leaf-Disease-Detection
 ### Step 2: Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ### Step 3: Configure Environment Variables
@@ -310,6 +310,7 @@ Plant-Leaf-Disease-Detection/
 │   │   ├── initialize_chat()     # Start chat session with disease context
 │   │   └── chat_with_gpt()       # Send messages & get responses
 │   │
+│   ├── requirements.txt          # Python dependencies
 │   └── assets/
 │       └── best.pt              # Pre-trained YOLOv11 model weights
 │
@@ -331,7 +332,6 @@ Plant-Leaf-Disease-Detection/
 │       ├── API calls (fetch)
 │       └── Chat message handling
 │
-├── requirements.txt             # Python dependencies
 ├── trainPlantDocToYOLO.ipynb    # Colab training notebook
 ├── dataset-info.png             # Augmentation details image
 ├── .env                         # Environment variables (create this)

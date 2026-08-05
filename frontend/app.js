@@ -1,6 +1,6 @@
-const API_BASE_URL = window.location.origin.startsWith("http")
-  ? window.location.origin
-  : "http://127.0.0.1:5000";
+// Change this string to your live Render backend URL before deploying to Vercel!
+// Example: const API_BASE_URL = "https://leaf-disease-api.onrender.com";
+const API_BASE_URL = "https://plant-leaf-disease-detection-3ek1.onrender.com";
 
 // DOM elements
 const form = document.getElementById("uploadForm");
