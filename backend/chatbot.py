@@ -2,18 +2,19 @@ import os
 import uuid
 import time
 from dotenv import load_dotenv
-import google.generativeai as genai
-
+from google import genai
+from google.genai import types
 # Load environment variables from parent directory
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 # Configure Gemini API
 api_key = os.getenv("GEMINI_API_KEY")
+client = None
 if not api_key:
     print("WARNING: GEMINI_API_KEY not found in .env file. Chat functionality will be limited.")
 else:
     try:
-        genai.configure(api_key=api_key)
+        client = genai.Client(api_key=api_key)
     except Exception as e:
         print(f"Error configuring Gemini API: {e}")
 
@@ -42,11 +43,16 @@ def initialize_chat(disease: str) -> str:
     cleanup_sessions()
     try:
         session_id = str(uuid.uuid4())
-        # Inject the parsed disease into the systemic instruction for this session
+        if not client:
+            return None
+            
         instruction = f"{SYSTEM_PROMPT}\n\nIMPORTANT CONTEXT: The user's plant is diagnosed with '{disease}'."
-        local_model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=instruction)
-        
-        chat_session = local_model.start_chat(history=[])
+        chat_session = client.chats.create(
+            model='gemini-2.5-flash',
+            config=types.GenerateContentConfig(
+                system_instruction=instruction
+            )
+        )
         ACTIVE_SESSIONS[session_id] = {
             'session': chat_session,
             'last_accessed': time.time()

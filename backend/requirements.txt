@@ -3,5 +3,5 @@ flask-cors
 ultralytics
 pillow
 python-dotenv
-google-generativeai
+google-genai
 waitress
