@@ -62,7 +62,7 @@ def predict_json():
         if len(image_bytes) > 10 * 1024 * 1024:
             return jsonify({'error': 'File too large. Maximum size is 10MB.'}), 400
         
-        diseases, image_b64 = predict_disease(image_bytes)
+        diseases, image_b64, highest_conf = predict_disease(image_bytes)
         
         # Initialize chatbot with detected disease
         session_id = None
@@ -71,6 +71,7 @@ def predict_json():
         
         return jsonify({
             "diseases": diseases,
+            "highest_conf": highest_conf,
             "image_b64": image_b64,
             "session_id": session_id,
             "status": "success"
@@ -79,9 +80,10 @@ def predict_json():
     except ValueError as val_err:
         return jsonify({'error': str(val_err)}), 400
     except Exception as e:
-        err_msg = traceback.format_exc()
-        print(f"Prediction error:\\n{err_msg}")
-        return jsonify({'error': f'Prediction failed: {str(e)}', 'traceback': err_msg}), 500
+        # Log the traceback securely on the server side
+        print(f"Prediction error:\n{traceback.format_exc()}")
+        # Do NOT return traceback in the JSON response
+        return jsonify({'error': 'An internal server error occurred during prediction. Please try again.'}), 500
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -108,4 +110,10 @@ def chat():
         return jsonify({"reply": "An error occurred. Please try again."}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        from waitress import serve
+        print("Starting production server with Waitress on port 5000...")
+        serve(app, host='0.0.0.0', port=5000)
+    except ImportError:
+        print("Waitress not installed. Falling back to Flask development server (NOT RECOMMENDED for production).")
+        app.run(host='0.0.0.0', port=5000, debug=False)

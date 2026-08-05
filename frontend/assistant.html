@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Treatment Assistant</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>
+        <i class="fa-solid fa-leaf" style="color: #138a36"></i> Plant Leaf
+        Disease Detection & Treatment System
+      </h1>
+      <p>AI Treatment Assistant</p>
+    </div>
+
+    <div class="container">
+      <a href="index.html" class="nav-button"
+        ><i class="fa-solid fa-arrow-left"></i> Back to Detection</a
+      >
+
+      <section class="chatbot-card">
+        <div class="chatbot-header">
+          <h2>AI Treatment Assistant</h2>
+          <p id="chat-status">Connecting...</p>
+        </div>
+        <div id="chat-window"></div>
+        <form id="chat-form">
+          <input
+            id="chat-input"
+            type="text"
+            placeholder="Ask about treatment options..."
+            disabled
+          />
+          <button type="submit" disabled>Send</button>
+        </form>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

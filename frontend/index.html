@@ -1,45 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaf Disease Detection</title>
-    <link rel="icon" href="icon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plant Leaf Disease Detection</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="header">
-        <h1><i class="fa-solid fa-leaf" style="color: #138A36;"></i> Plant Leaf Disease Detection & Treatment System</h1>
-        <p>Upload a leaf image to detect diseases and get medication advice</p>
+      <h1>
+        <i class="fa-solid fa-leaf" style="color: #138a36"></i> Plant Leaf
+        Disease Detection & Treatment System
+      </h1>
+      <p><i>Upload a leaf image to detect diseases and get medication advice</i></p>
     </div>
 
     <div class="container">
-        <div class="main-section">
-            <div class="upload-card">
-                <h2>Upload Leaf Image</h2>
-                <form id="uploadForm">
-                    <input type="file" id="fileInput" accept="image/*" required>
-                    <button type="submit">Analyze Image</button>
-                </form>
+      <div class="main-section">
+        <div class="upload-card">
+          <h2>Upload Leaf Image</h2>
+          <form id="uploadForm">
+            <div class="drop-zone" id="dropZone">
+              <i class="fa-solid fa-cloud-arrow-up drop-zone-icon"></i>
+              <span class="drop-zone__prompt" id="dropZonePrompt"
+                >Drag & drop or click to upload</span
+              >
+              <input type="file" id="fileInput" accept="image/*" required />
             </div>
-
-            <div id="result" class="result-card"></div>
+            <button type="submit">Analyze Image</button>
+          </form>
         </div>
 
-        <section class="chatbot-card">
-            <div class="chatbot-header">
-                <h2>💬 AI Treatment Assistant</h2>
-                <p id="chat-status">Upload an image to start</p>
-            </div>
-            <div id="chat-window"></div>
-            <form id="chat-form">
-                <input id="chat-input" type="text" placeholder="Ask about treatment options..." disabled />
-                <button type="submit" disabled>Send</button>
-            </form>
-        </section>
+        <div id="result" class="result-card"></div>
+      </div>
     </div>
 
     <script src="app.js"></script>
-</body>
+  </body>
 </html>

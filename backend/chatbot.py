@@ -1,5 +1,6 @@
 import os
 import uuid
+import time
 from dotenv import load_dotenv
 import google.generativeai as genai
 
@@ -26,12 +27,19 @@ Given the detected leaf disease name in the context, provide:
 - Cultural practices and precautions.
 - When to consult a local agronomist."""
 
-# default model (unused for chat, just kept if needed)
-model = genai.GenerativeModel('gemini-2.5-flash')
 ACTIVE_SESSIONS = {}
+SESSION_TTL_SECONDS = 1800  # 30 minutes
+
+def cleanup_sessions():
+    """Remove expired sessions from memory."""
+    current_time = time.time()
+    expired_keys = [k for k, v in ACTIVE_SESSIONS.items() if current_time - v['last_accessed'] > SESSION_TTL_SECONDS]
+    for k in expired_keys:
+        del ACTIVE_SESSIONS[k]
 
 def initialize_chat(disease: str) -> str:
     """Initialize chat session with detected disease context, returns session_id"""
+    cleanup_sessions()
     try:
         session_id = str(uuid.uuid4())
         # Inject the parsed disease into the systemic instruction for this session
@@ -39,7 +47,10 @@ def initialize_chat(disease: str) -> str:
         local_model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=instruction)
         
         chat_session = local_model.start_chat(history=[])
-        ACTIVE_SESSIONS[session_id] = chat_session
+        ACTIVE_SESSIONS[session_id] = {
+            'session': chat_session,
+            'last_accessed': time.time()
+        }
         return session_id
     except Exception as e:
         print(f"Error initializing chat: {e}")
@@ -47,12 +58,17 @@ def initialize_chat(disease: str) -> str:
 
 def chat_with_gpt(session_id: str, user_message: str) -> str:
     """Send user message to chat session and return response"""
+    cleanup_sessions()
+    
     if not session_id or session_id not in ACTIVE_SESSIONS:
         return "Chat service is currently unavailable or session expired. Please analyze a new image."
     
-    chat_session = ACTIVE_SESSIONS[session_id]
+    session_data = ACTIVE_SESSIONS[session_id]
+    chat_session = session_data['session']
+    
     try:
         response = chat_session.send_message(user_message)
+        session_data['last_accessed'] = time.time()  # Update last accessed
         return response.text.strip()
     except Exception as e:
         print(f"Chatbot error: {e}")
