@@ -1,3 +1,10 @@
+import os
+# Deep memory optimization for 512MB cloud environments
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["MALLOC_ARENA_MAX"] = "2"
+
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os

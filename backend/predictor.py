@@ -2,6 +2,14 @@ import os
 import io
 import base64
 from PIL import Image
+
+# Clamp torch RAM initialization footprint for 512MB Free Tier containers
+try:
+    import torch
+    torch.set_num_threads(1)
+except ImportError:
+    pass
+
 from ultralytics import YOLO
 
 # Resolve absolute path to the model so it works regardless of cwd
