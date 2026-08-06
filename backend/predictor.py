@@ -1,38 +1,21 @@
 import os
 import io
 import base64
-import gc
 from PIL import Image
-
-try:
-    import torch
-    # Extreme CPU threading limits imposed for 512MB RAM Linux containers
-    torch.set_num_threads(1)
-except ImportError:
-    pass
-
 from ultralytics import YOLO
 
 # Resolve absolute path to the model so it works regardless of cwd
 BASE_DIR = os.path.dirname(__file__)
-ONNX_PATH = os.path.join(BASE_DIR, 'assets', 'best.onnx')
+PT_PATH = os.path.join(BASE_DIR, 'assets', 'best.pt')
 
-# STRICT OVERRIDE: 
-# Do under no circumstances load best.pt, because PyTorch weights natively uncompress to ~300MB
-# forcing Render OOM kills. We exclusively force the exported .onnx graph runtime.
-if not os.path.exists(ONNX_PATH):
-    print(f"CRITICAL ERROR: {ONNX_PATH} not found! You must provide an ONNX model.")
+try:
+    model = YOLO(PT_PATH, task='detect')
+except Exception as e:
+    print(f"Error loading YOLO model from {PT_PATH}: {e}")
     model = None
-else:
-    try:
-        model = YOLO(ONNX_PATH, task='detect')
-    except Exception as e:
-        print(f"Error loading ONNX model from {ONNX_PATH}: {e}")
-        model = None
 
 def is_model_loaded() -> bool:
     return model is not None
-
 
 def predict_disease(image_bytes: bytes) -> tuple:
     """
@@ -44,21 +27,13 @@ def predict_disease(image_bytes: bytes) -> tuple:
     
     try:
         image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-        # Extreme Memory Optimization: Force image down to YOLO's native 640x640 tensor size immediately
-        # This completely stops 5MB+ iPhone photos from expanding into 60MB+ raw RGB Bitmaps in memory
-        image.thumbnail((640, 640), Image.Resampling.NEAREST)
     except Exception as e:
         raise ValueError("Invalid image file. Could not parse image bytes.") from e
         
     try:
-        gc.collect() # Force OS to sweep memory before the PyTorch spike
-        # Strictly disabled internal plotting/saving memory hooks
-        results = model.predict(image, save=False, plots=False)[0]
+        results = model.predict(image)[0]
     except Exception as e:
         raise RuntimeError(f"YOLO prediction failed: {e}") from e
-    finally:
-        del image
-        gc.collect()
     
     # Extract unique diseases sorted by highest confidence
     disease_map = {}
@@ -74,19 +49,11 @@ def predict_disease(image_bytes: bytes) -> tuple:
         
     # Generate annotated image in b64
     try:
-        # bgr=False guarantees correct RGB channels for PIL without numpy splicing
-        annotated = results.plot(conf=True, labels=True, bgr=False)
+        annotated = results.plot(conf=True, labels=True)
         buf = io.BytesIO()
-        # optimize=True compresses the returned TCP package saving network overhead
-        Image.fromarray(annotated).save(buf, format="JPEG", optimize=True, quality=80) 
+        Image.fromarray(annotated[..., ::-1]).save(buf, format="JPEG")
         buf.seek(0)
         image_b64 = base64.b64encode(buf.read()).decode("utf-8")
-        
-        # Deep memory purge 
-        del annotated
-        del results
-        del buf
-        gc.collect()
     except Exception as e:
         raise RuntimeError(f"Failed to generate annotated image: {e}") from e
         

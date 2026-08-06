@@ -1,10 +1,3 @@
-import os
-# Deep memory optimization for 512MB cloud environments
-os.environ["OMP_NUM_THREADS"] = "1"
-os.environ["MKL_NUM_THREADS"] = "1"
-os.environ["OPENBLAS_NUM_THREADS"] = "1"
-os.environ["MALLOC_ARENA_MAX"] = "2"
-
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
@@ -13,12 +6,8 @@ from chatbot import initialize_chat, chat_with_gpt
 from predictor import predict_disease, is_model_loaded
 
 app = Flask(__name__)
-origins = [
-    "https://plant-leaf-disease-detection-1.vercel.app",
-    "http://127.0.0.1:5000",
-    "http://localhost:5000"
-]
-CORS(app, resources={r"/*": {"origins": origins}})
+# Enable default CORS for local testing
+CORS(app)
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), '..', 'frontend')
 
 @app.route('/health', methods=['GET'])
@@ -122,11 +111,5 @@ def chat():
         return jsonify({"reply": "An error occurred. Please try again."}), 500
 
 if __name__ == '__main__':
-    try:
-        from waitress import serve
-        port = int(os.environ.get('PORT', 5000))
-        print(f"Starting production server with Waitress on port {port}...")
-        serve(app, host='0.0.0.0', port=port)
-    except ImportError:
-        print("Waitress not installed. Falling back to Flask development server (NOT RECOMMENDED for production).")
-        app.run(host='0.0.0.0', port=5000, debug=False)
+    print("Starting local development server...")
+    app.run(debug=True, port=5000)

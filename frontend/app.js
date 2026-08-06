@@ -1,6 +1,5 @@
-// Change this string to your live Render backend URL before deploying to Vercel!
-// Example: const API_BASE_URL = "https://leaf-disease-api.onrender.com";
-const API_BASE_URL = "https://plant-leaf-disease-detection-3ek1.onrender.com";
+// Target local Python Flask Instance
+const API_BASE_URL = "http://127.0.0.1:5000";
 
 // DOM elements
 const form = document.getElementById("uploadForm");

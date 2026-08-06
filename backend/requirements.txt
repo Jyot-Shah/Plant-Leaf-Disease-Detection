@@ -4,6 +4,3 @@ ultralytics
 pillow
 python-dotenv
 google-genai
-waitress
-onnx
-onnxruntime

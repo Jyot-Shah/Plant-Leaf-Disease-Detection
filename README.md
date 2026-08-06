@@ -29,7 +29,7 @@ intelligent chatbot powered by Google's Gemini.
 ## ✨ Features
 
 - 🔍 **Real-time Disease Detection**: Upload leaf images and get instant disease
-  identification using YOLOv11 & ONNX Runtime
+  identification using YOLOv11
 - 🤖 **AI Treatment Assistant**: Dedicated chat portal for personalized
   medication and treatment advice powered by Gemini
 - 📊 **Visual Results**: View annotated images with bounding boxes highlighting
@@ -38,22 +38,21 @@ intelligent chatbot powered by Google's Gemini.
   recommendations with session restrictions
 - 🎨 **Modern Multi-Page UI**: Clean, responsive layout (`index.html` &
   `assistant.html`) with smooth scroll and animations
-- ⚡ **Fast Processing**: Optimized YOLOv11 ONNX inference logic backing stable
-  production requests
+- ⚡ **Fast Processing**: Optimized YOLOv11 inference logic backing stable
+  requests
 
 ## 🛠 Tech Stack
 
 ### Backend
 
-| Technology                     | Purpose                           |
-| ------------------------------ | --------------------------------- |
-| **Flask**                      | Web framework & REST API          |
-| **Waitress**                   | Production WSGI Server            |
-| **Ultralytics YOLOv11 & ONNX** | High-performance object detection |
-| **Google Gemini 2.5 Flash**    | Conversational AI chatbot         |
-| **Pillow**                     | Image processing                  |
-| **Flask-CORS**                 | Cross-origin resource sharing     |
-| **python-dotenv**              | Environment variable management   |
+| Technology                  | Purpose                           |
+| --------------------------- | --------------------------------- |
+| **Flask**                   | Web framework & REST API          |
+| **Ultralytics YOLOv11**     | High-performance object detection |
+| **Google Gemini 2.5 Flash** | Conversational AI chatbot         |
+| **Pillow**                  | Image processing                  |
+| **Flask-CORS**              | Cross-origin resource sharing     |
+| **python-dotenv**           | Environment variable management   |
 
 ### Frontend
 
